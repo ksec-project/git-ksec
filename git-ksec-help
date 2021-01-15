@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+require 'optparse'
+
+OptionParser.new do |opts|
+  # banner and separator are the usage description showed with '--help' or '-h'
+  opts.banner = 'Usage: git ksec [submodule]'
+  opts.separator ''
+  opts.separator 'included submodules:'
+  opts.separator 'create - Creates branches for new features'
+  opts.separator 'help - explains what this extension is for'
+end.parse!
