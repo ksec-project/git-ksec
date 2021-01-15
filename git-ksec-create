@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+require 'optparse'
+
+options = { verbose: false, branch: 'master' }
+
+OptionParser.new do |opts|
+  # banner and separator are the usage description showed with '--help' or '-h'
+  opts.banner = 'Usage: git ksec create [action] [name] [options]'
+  opts.separator '[action] can be: feat/fix/refactor/chore'
+  opts.separator '[name] name of your new branch (e.g.: new-logic-branch)'
+  opts.separator 'Options:'
+  # options (switch - true/false)
+  opts.on('-v', '--verbose', 'Verbose mode') do |v|
+    options[:verbose] = v
+  end
+  opts.on('-b', '-branch', 'Branch from where you want to start the new action (default: master)') do |b|
+    options[:branch] = b
+  end
+end.parse!
+
+unless `git ls-files -m`.empty?
+  p 'clean changes before runing git ksec'
+  exit
+end
+
+case ARGV[0]
+when 'feat', 'feature', 'refactor', 'chore'
+  `git checkout #{options[:branch]}`
+  puts "moved to #{options[:branch]}" if options[:verbose]
+  `git checkout -b #{ARGV[0]}/#{ARGV[1]}`
+  new_branch = `git symbolic-ref --short HEAD`
+  puts "new branch: #{new_branch}" if options[:verbose]
+else
+  raise ArgumentError, 'invalid action'
+end
