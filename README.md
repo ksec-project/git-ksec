@@ -26,3 +26,5 @@ If you don't know how to get this path just go to your git-ksec folder, open you
 ```bash
 pwd
 ```
+
+git will automatically add the new extensions
